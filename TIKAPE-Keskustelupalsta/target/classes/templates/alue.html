@@ -1,0 +1,44 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-4.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+
+    <head>
+        <title>TIKAPE-keskustelupalsta</title>
+        <meta charset="utf-8" />
+        <link th:href="@{~/css/style.css}" rel="stylesheet" type="text/css" />
+    </head>
+
+    <body>
+        
+        <h1><a href="/">TIKAPE-keskustelupalsta</a></h1>
+        
+        <a href="/" class="takaisin" th:text="ALKUUN"></a>
+        <span th:text="${data.alueNimi}" class="nyt"></span>
+
+        <table>
+            <tr><th>ALUE: <span th:text="${data.alueNimi}"></span></th><th>VIESTEJÄ YHT.</th><th>VIIMEISIN VIESTI</th></tr>
+            <tr th:each="ketju : ${ketjut}">
+                <td><a th:href="@{~/ketju/{alue}/{ketju}/{page}(alue=${data.alue}, ketju=${ketju.id}, page=0)}" th:text="${ketju.otsikko}"></a></td>
+                <td th:text="${ketju.lkm}" class="right"></td>
+                <td>
+                    <span th:text="${ketju.kello}" class="kello"></span>
+                    &nbsp;
+                    <span th:text="${ketju.pvm}"></span>
+                </td>
+            </tr>
+        </table>
+
+        <div class="add">
+            <h2>Lisää viestiketju</h2>
+            <form method="post" action="/uusiketju">
+                <table>
+                    <tr><td>Nimi:</td><td><input type="text" name="nimi" /></td></tr>
+                    <tr><td>Otsikko:</td><td><input type="text" name="otsikko" /></td></tr>
+                    <tr><td>Viesti:</td><td><textarea name="viesti"></textarea></td></tr>
+                    <tr><td></td><td><input type="submit" value="LISÄÄ" /></td></tr>
+                </table>
+                <input type="hidden" name="alue" th:value="${data.alue}"/>
+            </form>
+        </div>
+
+    </body>
+</html>

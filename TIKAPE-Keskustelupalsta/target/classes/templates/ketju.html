@@ -1,0 +1,58 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-4.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+
+    <head>
+        <title>TIKAPE-keskustelupalsta</title>
+        <meta charset="utf-8" />
+        <link th:href="@{~/css/style.css}" rel="stylesheet" type="text/css" />
+    </head>
+
+    <body>
+        
+        <h1><a href="/">TIKAPE-keskustelupalsta</a></h1>
+        
+        <a href="/" class="takaisin" th:text="ALKUUN"></a>
+        <a th:href="@{~/alue/{alue}(alue=${data.alue})}" class="takaisin" th:text="${data.alueNimi}"></a>
+        <span th:text="${data.ketjuNimi}" class="nyt"></span>
+        
+        
+        <br /><br />
+        <h3><span th:text="${data.alueNimi}"></span> : <span th:text="${data.ketjuNimi}"></span></h3>
+
+        Sivut: 
+        <ul th:each="sivu : ${sivut}" class="pagination">
+            <li th:switch="${sivu.tila}">
+                <a th:case="0" th:href="@{~/ketju/{alue}/{ketju}/{sivu}(alue=${data.alue}, ketju=${data.ketju}, sivu=${sivu.sivu})}" th:text="${sivu.sivuStr}"></a>
+                <span th:case="1" class="aktiivinen" th:text="${sivu.sivuStr}"></span>
+            </li>
+        </ul>
+
+        <table>
+            <tr><th>LÄHETTÄJÄ</th><th>VIESTI</th></tr>
+            <tr th:each="viesti : ${viestit}">
+                <td>
+                    <span th:text="${viesti.nimi}" class="lahettaja"></span>
+                    &nbsp; &nbsp;
+                    <span th:text="${viesti.kello}" class="kello"></span>
+                    &nbsp;
+                    <span th:text="${viesti.pvm}"></span>
+                </td>
+                <td th:text="${viesti.viesti}"></td>
+            </tr>
+        </table>
+
+        <div class="add">
+            <h2>Lisää viesti</h2>
+            <form method="post" action="/uusiviesti">
+                <table>
+                    <tr><td>Nimi:</td><td><input type="text" name="nimi" /></td></tr>
+                    <tr><td>Viesti:</td><td><textarea name="viesti"></textarea></td></tr>
+                    <tr><td></td><td><input type="submit" value="LISÄÄ" /></td></tr>
+                </table>        
+                <input type="hidden" name="alue" th:value="${data.alue}"/>
+                <input type="hidden" name="ketju" th:value="${data.ketju}"/>
+            </form>
+        </div>
+
+    </body>
+</html>
