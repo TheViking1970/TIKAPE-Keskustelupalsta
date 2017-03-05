@@ -44,7 +44,7 @@ public class Main {
         get("/", (req, res) -> {
             HashMap map = new HashMap<>();
             
-            String sql = "SELECT id,nimi,lkm,pvm FROM Alueet";
+            String sql = "SELECT id,nimi,lkm,pvm FROM Alueet ORDER BY nimi ASC";
             PreparedStatement statement = connection.prepareStatement(sql);
             ResultSet result = statement.executeQuery();
             
@@ -147,9 +147,9 @@ public class Main {
             int ketju = Integer.parseInt(req.params(":ketju"));
             int sivu = Integer.parseInt(req.params(":sivu"));
 
-            String sql = "SELECT id,nimi,viesti,pvm FROM Viestit WHERE ketju=? ORDER BY pvm DESC LIMIT ?,?";
+            String sql = "SELECT id,nimi,viesti,pvm FROM Viestit WHERE ketju=? ORDER BY pvm ASC LIMIT ?,?";
             if(!sqlite) {
-                sql = "SELECT id,nimi,viesti,pvm FROM Viestit WHERE ketju=? ORDER BY pvm DESC LIMIT ? OFFSET ?";
+                sql = "SELECT id,nimi,viesti,pvm FROM Viestit WHERE ketju=? ORDER BY pvm ASC LIMIT ? OFFSET ?";
             }
             PreparedStatement statement = connection.prepareStatement(sql);
             statement.setInt(1, ketju);
